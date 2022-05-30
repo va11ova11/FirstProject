@@ -1,11 +1,11 @@
 package model;
 
-public class Currency1 {
+public class Currency {
     private String CurrencyName;
     private int PriceOnRub;
     private double CurrencyProfitability;
 
-    public Currency1(int priceOnRub, String currencyName, double CurrencyProfitability) {
+    public Currency(int priceOnRub, String currencyName, double CurrencyProfitability) {
         this.PriceOnRub = priceOnRub;
         this.CurrencyName = currencyName;
         this.CurrencyProfitability = CurrencyProfitability;

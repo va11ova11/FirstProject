@@ -1,40 +1,22 @@
 package model;
 
-public class Portfolio {
-    private int id;
-    private FoundStructure fondname;
-    private int amountfond;
-    private float summafond;
+public class Portfolio extends FoundStructure {
+   private int amountFond;
+   private float summaFond;
 
-    public int getId() {
-        return id;
+    public int getAmountFond() {
+        return amountFond;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setAmountFond(int amountFond) {
+        this.amountFond = amountFond;
     }
 
-    public FoundStructure getFondname() {
-        return fondname;
+    public float getSummaFond() {
+        return summaFond;
     }
 
-    public void setFondname(FoundStructure fondname) {
-        this.fondname = fondname;
-    }
-
-    public int getAmountfond() {
-        return amountfond;
-    }
-
-    public void setAmountfond(int amountfond) {
-        this.amountfond = amountfond;
-    }
-
-    public float getSummafond() {
-        return summafond;
-    }
-
-    public void setSummafond(float summafond) {
-        this.summafond = summafond;
+    public void setSummaFond(float summaFond) {
+        this.summaFond = summaFond;
     }
 }

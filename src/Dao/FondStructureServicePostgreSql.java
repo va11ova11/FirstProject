@@ -1,7 +1,6 @@
 package Dao;
-
 import model.FoundStructure;
-import model.Person;
+import model.Portfolio;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,7 +8,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class FondStructureServicePostgreSql implements FondStructureDAO {
-
     final String URL = "jdbc:postgresql://localhost:5432/portfolio";
     final String NAME = "postgres";
     final String PASSWORD = "123";
@@ -23,6 +21,8 @@ public class FondStructureServicePostgreSql implements FondStructureDAO {
         }
     }
 
+
+    //Получение фонда по Айди
     @Override
     public FoundStructure getFondById(int id) throws SQLException {
         FoundStructure foundStructure = new FoundStructure();
@@ -33,23 +33,27 @@ public class FondStructureServicePostgreSql implements FondStructureDAO {
         ResultSet resultSet = preparedStatement.executeQuery();
 
         while (resultSet.next()) {
+            foundStructure.setID(resultSet.getInt("id"));
             foundStructure.setFondName(resultSet.getString("fondname"));
             foundStructure.setFondPrice(resultSet.getDouble("fondprice"));
             foundStructure.setFondProfitability(resultSet.getDouble("fondprofitability"));
+            System.out.println("Фонд "+foundStructure.getId() + "." + foundStructure.getFondName() + "\nЦена фонда " +
+                    foundStructure.getFondPrice() +"\nДоходность "
+                    + foundStructure.getFondProfitability() + "%");
         }
-            return foundStructure;
-        }
+        return foundStructure;
+    }
 
 
-
+    //Получения всех фондов с базы и передача их в список
     @Override
     public List<FoundStructure> getAll() throws SQLException {
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM fond");
         System.out.println("№     Тикер       цена за 1 пай  годовая доходность");
-        List<FoundStructure> Fonds= new ArrayList<>();
+        List<FoundStructure> Fonds = new ArrayList<>();
         Fonds.add(0, null);
-        for (int i = 1; i<10; i++) {
+        for (int i = 1; i < 10; i++) {
             while (resultSet.next()) {
 
                 FoundStructure foundStructure = new FoundStructure();
@@ -59,35 +63,65 @@ public class FondStructureServicePostgreSql implements FondStructureDAO {
                 foundStructure.setFondProfitability(resultSet.getDouble("fondprofitability"));
                 Fonds.add(foundStructure);
                 System.out.println(foundStructure.getId() + "     " + foundStructure.getFondName() + "        " +
-                        foundStructure.getFondPrice()+ "          " + foundStructure.getFondProfitability() + "%");
-
+                        foundStructure.getFondPrice() + "          " + foundStructure.getFondProfitability() + "%");
             }
         }
         return Fonds;
     }
 
-    @Override
-    public void BuyFond(FoundStructure foundStructure) {
+        //Получение всех фондов с базы данных + покупка и изменение баланса в базе данных
+        @Override
+        public FoundStructure BuyFond () throws SQLException {
+            List<FoundStructure> Fonds = new FondStructureServicePostgreSql().getAll();
+            FoundStructure foundStructure = new FoundStructure();
+            CashDAOSql cashDAOSql = new CashDAOSql();
+            System.out.println("Если хотите купить фонд нажмите: 1\nВыход обратно в меню нажмите: 2");
+                Scanner scanner1 = new Scanner(System.in);
+                int Operation = scanner1.nextInt();
+                if (Operation == 1) {
+
+                    //Получаем фонд по Id
+                    System.out.println("Укажите Id фонда");
+                    int FondId = scanner1.nextInt();
 
 
+
+                    System.out.println("Укажите сколько паёв хотите купить");
+                    Scanner scanner2 = new Scanner(System.in);
+
+
+
+                    //Получение цены выбранного фонда из списка Фондов
+                    float FondPrice = (float) Fonds.get(FondId).getFondPrice();
+
+                    //-----Получение баланса с базы данных
+                    float balance = cashDAOSql.getBalance().getBalance();
+                    //-------------------
+
+                    //Вычисление баланса после покупки
+                    float Kolichestvo = scanner2.nextInt();
+                    float SummaPokupki = Kolichestvo * FondPrice;
+                    float NewBalance = balance - Kolichestvo * FondPrice;
+                    System.out.println("Сумма вашей покупки составляет: " + SummaPokupki);
+                    System.out.println("Ваш баланс: " + NewBalance);
+
+                    //Изменение баланса в базе данных
+                    cashDAOSql.updateBalance(NewBalance);
+
+        }
+                return foundStructure;
     }
-    @Override
-    public void removeFond(FoundStructure foundStructure) {
-
-    }
 
     @Override
-    public Person getBalance() throws SQLException {
-        Statement statement = connection.createStatement();
-        String Sql = "SELECT * FROM bank";
-        ResultSet resultSet = statement.executeQuery(Sql);
-        Person person = new Person();
-        resultSet.next();
-        person.setBalance(resultSet.getFloat("balance"));
-
-        return person;
+    public void InsertFondToBase() throws SQLException {
+//        PreparedStatement preparedStatement = connection.prepareStatement("insert into portfolio (id, fondname, amountfond) VALUES (?, ?, ?)");
+//        preparedStatement.setInt(1,foundStructure.getId());
+//        preparedStatement.setString(2,foundStructure.getFondName());
+//        preparedStatement.setInt(3, portfolio.getAmountFond());
+//        preparedStatement.execute();
+//        BuyFond().getFondName();
     }
-
-
-
 }
+
+
+
