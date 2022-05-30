@@ -1,6 +1,6 @@
 package model;
 
-public class FoundStructure {
+public class FoundStructure extends Portfolio{
     private int Id;
     private String FondName;
     private double FondPrice;

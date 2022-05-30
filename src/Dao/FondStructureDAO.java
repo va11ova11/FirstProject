@@ -11,5 +11,5 @@ public interface FondStructureDAO {
     FoundStructure getFondById(int id) throws SQLException;
     List<FoundStructure> getAll() throws SQLException;
     FoundStructure BuyFond() throws SQLException;
-    void InsertFondToBase() throws SQLException;
+    Portfolio getPortfolio() throws SQLException;
 }

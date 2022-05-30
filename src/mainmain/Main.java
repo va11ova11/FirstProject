@@ -1,6 +1,8 @@
 package mainmain;
 import Dao.CashDAOSql;
 import Dao.FondStructureServicePostgreSql;
+import model.Portfolio;
+
 import java.sql.*;
 import java.util.Scanner;
 public class Main {
@@ -42,12 +44,11 @@ public class Main {
                 fondStructureServicePostgreSql.BuyFond();
             }
 
-
-            //Занесение купленного фонда в базу данных в разработке
+            //Вывод портфеля с фондами
             if (command1 ==5){
                 FondStructureServicePostgreSql fondStructureServicePostgreSql = new FondStructureServicePostgreSql();
-                fondStructureServicePostgreSql.InsertFondToBase();
-            }
+                fondStructureServicePostgreSql.getPortfolio();
+        }
         }
     }
 }
