@@ -1,10 +1,12 @@
 package mainmain;
+
 import Dao.CashDAOSql;
 import Dao.FondStructureServicePostgreSql;
 import model.Portfolio;
 
 import java.sql.*;
 import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) throws SQLException {
 
@@ -15,21 +17,22 @@ public class Main {
             System.out.println("2. Посмтореть баланс");
             System.out.println("3. Снять с баланса");
             System.out.println("4. Купить фонд");
-            System.out.println("5. Посмотреть портфель");
+            System.out.println("5. Продать фонд");
+            System.out.println("6. Посмотреть портфель");
             Scanner scanner = new Scanner(System.in);
             int command1 = scanner.nextInt();
 
 
             //Пополнение баланса
             if (command1 == 1) {
-              CashDAOSql cashDAOSql = new CashDAOSql();
-              cashDAOSql.cashInBalance();
+                CashDAOSql cashDAOSql = new CashDAOSql();
+                cashDAOSql.cashInBalance();
             }
 
             //Показать баланс
             if (command1 == 2) {
-                CashDAOSql cashDAO= new CashDAOSql();
-                cashDAO.getBalance();
+                CashDAOSql cashDAO = new CashDAOSql();
+                cashDAO.getPrintBalance();
             }
 
             //Снять с баланса
@@ -43,12 +46,17 @@ public class Main {
                 FondStructureServicePostgreSql fondStructureServicePostgreSql = new FondStructureServicePostgreSql();
                 fondStructureServicePostgreSql.BuyFond();
             }
+            //Продать фонд + изменение баланса в базе данных
+            if (command1 == 5) {
+                FondStructureServicePostgreSql fondStructureServicePostgreSql = new FondStructureServicePostgreSql();
+                fondStructureServicePostgreSql.sellFond();
+            }
 
             //Вывод портфеля с фондами
-            if (command1 ==5){
+            if (command1 == 6) {
                 FondStructureServicePostgreSql fondStructureServicePostgreSql = new FondStructureServicePostgreSql();
                 fondStructureServicePostgreSql.getPortfolio();
-        }
+            }
         }
     }
 }
