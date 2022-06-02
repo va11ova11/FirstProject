@@ -1,5 +1,4 @@
 package Dao;
-
 import model.FoundStructure;
 import model.Portfolio;
 
@@ -75,7 +74,7 @@ public class FondStructureServicePostgreSql implements FondStructureDAO {
     @Override
     public void BuyFond() throws SQLException {
         List<FoundStructure> Fonds = new FondStructureServicePostgreSql().getAll();
-        FoundStructure foundStructure = new FoundStructure();
+        FoundStructure foundStructure;
         CashDAOSql cashDAOSql = new CashDAOSql();
 
 
@@ -133,20 +132,26 @@ public class FondStructureServicePostgreSql implements FondStructureDAO {
 
     //Получение портфеля
     @Override
-    public void getPortfolio() throws SQLException {
-        Portfolio portfolio = new Portfolio();
+    public List<Portfolio> getPortfolio() throws SQLException {
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM portfolio");
-        System.out.println("Ваш портфель на данный момент: ");
-        System.out.println("Название Фонда         Количество паёв      Общая сумма");
-        while (resultSet.next()) {
-            portfolio.setId(resultSet.getInt("id"));
-            portfolio.setName(resultSet.getString("fondname"));
-            portfolio.setAmountFond(resultSet.getInt("amountfond"));
-            portfolio.setSummaFond(resultSet.getFloat("summafond"));
-            System.out.println(portfolio.getId() + "." + portfolio.getName() + "   " +
-                    portfolio.getAmountFond() + "                   " + portfolio.getSummaFond());
+        List<Portfolio> portfolios = new ArrayList<>();
+        portfolios.add(0,null);
+            System.out.println("Ваш портфель на данный момент: ");
+            System.out.println("Название Фонда         Количество паёв      Общая сумма");
+        for(int i = 1; i <10; i++) {
+            while (resultSet.next()) {
+                Portfolio portfolio = new Portfolio();
+                portfolio.setId(resultSet.getInt("id"));
+                portfolio.setName(resultSet.getString("fondname"));
+                portfolio.setAmountFond(resultSet.getInt("amountfond"));
+                portfolio.setSummaFond(resultSet.getFloat("summafond"));
+                portfolios.add(portfolio);
+                System.out.println(portfolio.getId() + "." + portfolio.getName() + "   " +
+                        portfolio.getAmountFond() + "                   " + portfolio.getSummaFond());
+            }
         }
+        return portfolios;
     }
 
 

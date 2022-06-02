@@ -58,27 +58,28 @@ public class CashDAOSql implements CashDAO {
         PreparedStatement preparedStatement = connection.prepareStatement("UPDATE bank SET balance=? WHERE id =1");
         preparedStatement.setFloat(1, NewBalance);
         preparedStatement.execute();
-
     }
 
     //Пополнить баланс
     @Override
     public Person cashInBalance() throws SQLException {
         Person person = new Person();
-
-
+        getPrintBalance();
         System.out.println("Введите сумму пополнения: ");
         float SummaPopolnenia = scanner.nextFloat();
-        float NewBalance = person.setBalance(getBalance().getBalance()) + SummaPopolnenia;
 
-        System.out.println("----------------------");
-        System.out.println("Ваш баланс: " + NewBalance);
-        System.out.println("----------------------");
+        if (SummaPopolnenia>0) {
+            float NewBalance = person.setBalance(getBalance().getBalance()) + SummaPopolnenia;
 
-        PreparedStatement preparedStatement = connection.prepareStatement("UPDATE bank SET balance = ? WHERE id = 1");
-        preparedStatement.setFloat(1, NewBalance);
-        preparedStatement.execute();
+            System.out.println("----------------------");
+            System.out.println("Ваш баланс пополнен на: " + SummaPopolnenia);
+            System.out.println("Теперь он составляет " + NewBalance);
+            System.out.println("----------------------");
 
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE bank SET balance = ? WHERE id = 1");
+            preparedStatement.setFloat(1, NewBalance);
+            preparedStatement.execute();
+        }
         return person;
     }
 
@@ -89,20 +90,26 @@ public class CashDAOSql implements CashDAO {
         System.out.println("----------------------");
         System.out.println("Ваш баланс: " + person.setBalance(getBalance().getBalance()));
         System.out.println("----------------------");
+        System.out.println("Укажите сумму снятия: ");
 
 
-        System.out.println("Введите сумму снятия: ");
         float SummaSnyatia = scanner.nextFloat();
-        float NewBalance = person.getBalance() - SummaSnyatia;
 
-        System.out.println("----------------------");
-        System.out.println("Ваш баланс: " + NewBalance);
-        System.out.println("----------------------");
+        //Проверка на превышение баланса
+        if(SummaSnyatia < person.getBalance()) {
+            float NewBalance = person.getBalance() - SummaSnyatia;
 
-        PreparedStatement preparedStatement = connection.prepareStatement("UPDATE bank set balance = ? where id = 1;");
-        preparedStatement.setFloat(1, NewBalance);
-        preparedStatement.execute();
+            System.out.println("----------------------");
+            System.out.println("Вы сняля с баланса: " + SummaSnyatia);
+            System.out.println("Теперь он составляет: " + NewBalance);
+            System.out.println("----------------------");
 
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE bank set balance = ? where id = 1;");
+            preparedStatement.setFloat(1, NewBalance);
+            preparedStatement.execute();
+        }else {
+            System.out.println("Сумма снятия превышает баланс");
+        }
         return person;
     }
 }

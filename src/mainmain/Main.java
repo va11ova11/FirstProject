@@ -46,6 +46,7 @@ public class Main {
                 FondStructureServicePostgreSql fondStructureServicePostgreSql = new FondStructureServicePostgreSql();
                 fondStructureServicePostgreSql.BuyFond();
             }
+
             //Продать фонд + изменение баланса в базе данных
             if (command1 == 5) {
                 FondStructureServicePostgreSql fondStructureServicePostgreSql = new FondStructureServicePostgreSql();
