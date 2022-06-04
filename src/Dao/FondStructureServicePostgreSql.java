@@ -113,7 +113,6 @@ public class FondStructureServicePostgreSql implements FondStructureDAO {
             resultSet.getFloat("fondprice");
         }
 
-
         //Занесение покупки в базу данных
         String Sql = "UPDATE portfolio set amountfond = ? ,summafond = ?, fondprice = ? WHERE id = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(Sql);
@@ -128,7 +127,6 @@ public class FondStructureServicePostgreSql implements FondStructureDAO {
         //Изменение баланса в базе данных
         cashDAOSql.updateBalance(NewBalance);
     }
-
 
     //Получение портфеля
     @Override

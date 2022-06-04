@@ -2,8 +2,6 @@ package mainmain;
 
 import Dao.CashDAOSql;
 import Dao.FondStructureServicePostgreSql;
-import model.Portfolio;
-
 import java.sql.*;
 import java.util.Scanner;
 
