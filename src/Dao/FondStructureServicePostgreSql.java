@@ -50,11 +50,10 @@ public class FondStructureServicePostgreSql implements FondStructureDAO {
     @Override
     public List<FoundStructure> getAll() throws SQLException {
         Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM fond");
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM fond ORDER BY id");
         System.out.println("№     Тикер       цена за 1 пай  годовая доходность");
         List<FoundStructure> Fonds = new ArrayList<>();
         Fonds.add(0, null);
-        for (int i = 1; i < 10; i++) {
             while (resultSet.next()) {
 
                 FoundStructure foundStructure = new FoundStructure();
@@ -66,7 +65,6 @@ public class FondStructureServicePostgreSql implements FondStructureDAO {
                 System.out.println(foundStructure.getId() + "     " + foundStructure.getFondName() + "        " +
                         foundStructure.getFondPrice() + "          " + foundStructure.getFondProfitability() + "%");
             }
-        }
         return Fonds;
     }
 
@@ -74,14 +72,14 @@ public class FondStructureServicePostgreSql implements FondStructureDAO {
     @Override
     public void BuyFond() throws SQLException {
         List<FoundStructure> Fonds = new FondStructureServicePostgreSql().getAll();
-        FoundStructure foundStructure;
+        FoundStructure foundStructure = new FoundStructure();
         CashDAOSql cashDAOSql = new CashDAOSql();
 
 
         //Получаем фонд по Id
         System.out.println("Укажите Id фонда");
         int FondId = scanner.nextInt();
-        foundStructure = getFondById(FondId);
+        getFondById(FondId);
 
         //Получение цены выбранного фонда из списка Фондов
         float FondPrice = (float) Fonds.get(FondId).getFondPrice();
@@ -132,12 +130,14 @@ public class FondStructureServicePostgreSql implements FondStructureDAO {
     @Override
     public List<Portfolio> getPortfolio() throws SQLException {
         Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM portfolio");
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM portfolio ORDER BY id");
         List<Portfolio> portfolios = new ArrayList<>();
         portfolios.add(0,null);
+
             System.out.println("Ваш портфель на данный момент: ");
+            System.out.println("Стоимость портфеля: " + getSummaPortfolio());
             System.out.println("Название Фонда         Количество паёв      Общая сумма");
-        for(int i = 1; i <10; i++) {
+        for(int i = 1; i <11; i++) {
             while (resultSet.next()) {
                 Portfolio portfolio = new Portfolio();
                 portfolio.setId(resultSet.getInt("id"));
@@ -206,6 +206,19 @@ public class FondStructureServicePostgreSql implements FondStructureDAO {
         preparedStatement.setInt(3, FondId);
         preparedStatement.execute();
     }
+
+    //Получение суммы всех фондов
+    public float getSummaPortfolio() throws SQLException {
+        String Sql = "SELECT * FROM portfolio ORDER BY ID";
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(Sql);
+        float summa = 0;
+        while (resultSet.next()){
+            summa = summa + resultSet.getFloat("summafond");
+        }
+        return summa;
+    }
+
 }
 
 

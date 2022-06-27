@@ -21,6 +21,8 @@ public class CashDAOSql implements CashDAO {
 
     Scanner scanner = new Scanner(System.in);
 
+
+    //Получить баланс
     @Override
     public Person getBalance() throws SQLException {
         Statement statement = connection.createStatement();
@@ -60,7 +62,7 @@ public class CashDAOSql implements CashDAO {
         preparedStatement.execute();
     }
 
-    //Пополнить баланс
+    //Пополнить баланс + изменение баланса в базе данных
     @Override
     public Person cashInBalance() throws SQLException {
         Person person = new Person();
@@ -82,7 +84,7 @@ public class CashDAOSql implements CashDAO {
         return person;
     }
 
-    //Снять с баланса
+    //Снять с баланса + изменение в базе данных
     @Override
     public Person cashOutBalance() throws SQLException {
         Person person = new Person();

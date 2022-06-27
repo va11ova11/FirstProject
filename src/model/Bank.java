@@ -1,6 +1,6 @@
 package model;
 
-public class Bank {
+public class Bank extends Person {
     private int Id;
     private float balance;
 

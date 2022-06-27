@@ -2,11 +2,21 @@ package mainmain;
 
 import Dao.CashDAOSql;
 import Dao.FondStructureServicePostgreSql;
+import FondOperation.OperationDAOImpl;
+
 import java.sql.*;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws SQLException {
+
+        CashDAOSql cashDAOSql = new CashDAOSql();
+        CashDAOSql cashDAOSql1 = new CashDAOSql();
+        CashDAOSql cashDAOSql2 = new CashDAOSql();
+        FondStructureServicePostgreSql fondStructureServicePostgreSql = new FondStructureServicePostgreSql();
+        FondStructureServicePostgreSql fondStructureServicePostgreSql1 = new FondStructureServicePostgreSql();
+        FondStructureServicePostgreSql fondStructureServicePostgreSql2 = new FondStructureServicePostgreSql();
+
 
         //Менюшка
         while (true) {
@@ -20,45 +30,43 @@ public class Main {
             Scanner scanner = new Scanner(System.in);
             int command1 = scanner.nextInt();
 
+            switch (command1) {
+                case 1:
+                    //Пополнение баланса
+                    cashDAOSql.cashInBalance();
+                    break;
 
-            //Пополнение баланса
-            if (command1 == 1) {
-                CashDAOSql cashDAOSql = new CashDAOSql();
-                cashDAOSql.cashInBalance();
-            }
+                case 2:
+                    //Показать баланс
+                    cashDAOSql1.getPrintBalance();
+                    break;
 
-            //Показать баланс
-            if (command1 == 2) {
-                CashDAOSql cashDAO = new CashDAOSql();
-                cashDAO.getPrintBalance();
-            }
+                case 3:
+                    //Снять с баланса
+                    cashDAOSql2.cashOutBalance();
+                    break;
 
-            //Снять с баланса
-            if (command1 == 3) {
-                CashDAOSql cashDAOSql = new CashDAOSql();
-                cashDAOSql.cashOutBalance();
-            }
+                case 4:
+                    //Покупка фонда + изменение баланса в базе данных
+                    fondStructureServicePostgreSql.BuyFond();
+                    break;
 
-            //Покупка фонда + изменение баланса в базе данных
-            if (command1 == 4) {
-                FondStructureServicePostgreSql fondStructureServicePostgreSql = new FondStructureServicePostgreSql();
-                fondStructureServicePostgreSql.BuyFond();
-            }
+                case 5:
+                    //Продать фонд + изменение баланса в базе данных
+                    fondStructureServicePostgreSql1.sellFond();
 
-            //Продать фонд + изменение баланса в базе данных
-            if (command1 == 5) {
-                FondStructureServicePostgreSql fondStructureServicePostgreSql = new FondStructureServicePostgreSql();
-                fondStructureServicePostgreSql.sellFond();
-            }
+                case 6:
+                    //Вывод портфеля с фондами
+                    fondStructureServicePostgreSql2.getPortfolio();
 
-            //Вывод портфеля с фондами
-            if (command1 == 6) {
-                FondStructureServicePostgreSql fondStructureServicePostgreSql = new FondStructureServicePostgreSql();
-                fondStructureServicePostgreSql.getPortfolio();
+//                case 8:
+//                    OperationDAOImpl operationDAO = new OperationDAOImpl();
+//                    System.out.println(operationDAO.getPresentValueById(1));
             }
         }
     }
 }
+
 
 
 
